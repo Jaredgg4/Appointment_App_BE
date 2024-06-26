@@ -29,7 +29,9 @@ export class UsersController {
     }
 
     @Patch(':id')
-    updateUser(@Body() UpdateUserDTO: UpdateUserDTO) {
-        
+    updateUser(@Param('id') id:string, @Body() UpdateUserDTO: UpdateUserDTO) {
+        const isValid = mongoose.Types.ObjectId.isValid(id);
+        if(!isValid) throw new HttpException('Invalid ID', 400);
+        return this.usersService.updateUser(id, UpdateUserDTO)
     }
 }
